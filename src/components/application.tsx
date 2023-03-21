@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Quotes from './quotes';
 import InspirationalQuote from './quote';
-import Loading from './loading';
 
 export type Quote = {
   id: number;
@@ -20,19 +19,21 @@ export const fetchQuotes = async (count: number) => {
 };
 
 const Application = () => {
-  const [quote, setQuote] = useState();
+  const [quotes, setQuotes] = useState<Quote[]>([]);
 
-  useEffect(() => {
-    fetchRandomQuote().then(setQuote);
-  }, []);
 
-  if (!quote) return <Loading />;
   return (
     <main className="w-full max-w-2xl py-16 mx-auto">
       {/* <InspirationalQuote content={quote.content} source={quote.source} /> */}
-      {/* <Quotes>
-        <div className="grid grid-cols-2 gap-4"></div>
-      </Quotes> */}
+      <Quotes setQuotes={setQuotes}>
+          {quotes.map((quote) => (
+            <InspirationalQuote 
+              key={quote.id}
+              content={quote.content}
+              source={quote.source}
+            />
+          ))}
+      </Quotes>
     </main>
   );
 };
